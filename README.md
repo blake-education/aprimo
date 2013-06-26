@@ -1,6 +1,6 @@
 # Aprimo
 
-A basic API wrapper for the Aprimo API
+A basic wrapper for the Aprimo API
 
 ## Installation
 

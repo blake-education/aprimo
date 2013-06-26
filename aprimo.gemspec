@@ -8,8 +8,8 @@ Gem::Specification.new do |spec|
   spec.version       = Aprimo::VERSION
   spec.authors       = ["Brad Wilson"]
   spec.email         = ["brad@lucky-dip.net"]
-  spec.description   = %q{A basic API wrapper for the Aprimo API}
-  spec.summary       = %q{A basic API wrapper for the Aprimo API}
+  spec.description   = %q{A basic wrapper for the Aprimo API}
+  spec.summary       = %q{A basic wrapper for the Aprimo API}
   spec.homepage      = ""
   spec.license       = "MIT"
 
