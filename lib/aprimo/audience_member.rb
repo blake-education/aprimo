@@ -1,6 +1,5 @@
 module Aprimo
   class AudienceMember < Struct.new(:id)
-    EQUALS = 1    # 1 == EQUALS in aprimo filter speak
     OBJECT_ID = 9 # 9 == audience member type
 
     def self.api
@@ -37,7 +36,7 @@ module Aprimo
     end
 
     def self.find_by(aprimo_field, value, extra_conditions = [])
-      filters = [[aprimo_field, EQUALS, value]] + extra_conditions
+      filters = [[aprimo_field, API::EQUALS, value]] + extra_conditions
       find(filters)
     end
 

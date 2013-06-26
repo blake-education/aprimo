@@ -1,5 +1,7 @@
 module Aprimo
   class API
+    EQUALS = 1    # 1 == EQUALS in aprimo filter speak
+
     def self.config=(config)
       @config = config
     end
