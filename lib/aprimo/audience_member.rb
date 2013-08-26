@@ -1,5 +1,5 @@
 module Aprimo
-  class AudienceMember < Struct.new(:id)
+  class AudienceMember < Struct.new(:id, :values)
     OBJECT_ID = 9 # 9 == audience member type
 
     def self.api
@@ -30,9 +30,12 @@ module Aprimo
     end
 
     def self.find(filters)
-      xml = query(filters)
-      am = Nokogiri(xml).at("AudienceMember")
-      new(am["ID"]) if am
+      raw_xml = query(filters)
+      am = Nokogiri(raw_xml).at("AudienceMember")
+      if am
+        values = am.elements.map { |e| [e.name, e.text]}
+        new(am["ID"], Hash[values])
+      end
     end
 
     def self.find_by(aprimo_field, value, extra_conditions = [])
