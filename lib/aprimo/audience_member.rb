@@ -24,11 +24,41 @@ module Aprimo
           xml.SortItem(attribute: "audience_member_id", sortOrder: "0")
         end
       end
-
       api.post("/Gateway/#{OBJECT_ID}", "Query", xml.target!).
         body[3..-1] # need to strip off some useless encoding bytes
     end
 
+    def self.query_all(filters)
+      xml = ::Builder::XmlMarkup.new(indent: 2)
+      xml.list do
+        xml.FilterItems do
+          filters.each do |name, operator, value|
+            xml.FilterItem(attribute: name, operator: operator, value: value)
+          end
+          xml.SortItems do
+            xml.SortItem(attribute: "audience_member_id", sortOrder: "0")
+          end
+        end
+      end
+      api.post("/Gateway/#{OBJECT_ID}", "Query", xml.target!).
+        body[3..-1] # need to strip off some useless encoding bytes
+    end
+
+    ## Finds all matching records
+    def self.find_all(filters)
+      raw_xml = query_all(filters)
+
+      result = []
+      Nokogiri(raw_xml).css("AudienceMember").each do |am|
+        if am
+          values = am.elements.map { |e| [e.name, e.text]}
+          result << new(am["ID"], Hash[values])
+        end
+      end
+      result
+    end
+
+    ## Finds first matching record
     def self.find(filters)
       raw_xml = query(filters)
       am = Nokogiri(raw_xml).at("AudienceMember")
